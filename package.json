@@ -1,0 +1,33 @@
+{
+	"name": "blockking-web",
+	"version": "0.1.0",
+	"private": true,
+	"type": "module",
+	"description": "blockking.gg — landing page (SvelteKit + adapter-static)",
+	"scripts": {
+		"dev": "vite dev",
+		"build": "vite build",
+		"preview": "vite preview",
+		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
+		"lint": "prettier --check . && eslint .",
+		"format": "prettier --write ."
+	},
+	"devDependencies": {
+		"@eslint/compat": "^1.4.1",
+		"@eslint/js": "^9.39.5",
+		"@sveltejs/adapter-static": "^3.0.8",
+		"@sveltejs/kit": "^2.20.0",
+		"@sveltejs/vite-plugin-svelte": "^5.0.3",
+		"eslint": "^9.22.0",
+		"eslint-config-prettier": "^10.1.1",
+		"eslint-plugin-svelte": "^3.3.1",
+		"globals": "^16.0.0",
+		"prettier": "^3.5.3",
+		"prettier-plugin-svelte": "^3.3.3",
+		"svelte": "^5.23.0",
+		"svelte-check": "^4.1.5",
+		"typescript": "^5.8.2",
+		"typescript-eslint": "^8.26.1",
+		"vite": "^6.2.2"
+	}
+}

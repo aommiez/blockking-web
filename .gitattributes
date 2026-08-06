@@ -1,0 +1,10 @@
+# Prettier checks with endOfLine "lf". The repo's core.autocrlf=true would hand a
+# fresh checkout CRLF files, and `npm run lint` would then fail on every file
+# without a single source change. Pin the web tree to LF, the same way
+# server/.gitattributes pins the Go tree for gofmt.
+* text=auto eol=lf
+
+# Screenshots and the lockfile are not line-ending material.
+*.jpg binary
+*.png binary
+*.svg text eol=lf

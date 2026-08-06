@@ -1,0 +1,51 @@
+# DigitalOcean App Platform spec — blockking.gg landing page (static site).
+#
+# Source is the standalone public repo `aommiez/blockking-web`, which holds the
+# contents of r5's `web/` at its root. The game sources (`client/`, `server/`)
+# are deliberately NOT on GitHub; see "Publishing" in web/README.md for how that
+# mirror is refreshed.
+#
+# Source type is `git` (a plain clone URL), not `github`. The `github` type
+# requires the DigitalOcean<->GitHub OAuth integration, which can only be
+# authorised through a browser and so cannot be set up from this box. A `git`
+# source clones over HTTPS with no integration at all — which is why the mirror
+# repo has to stay public.
+#
+# Consequence of using `git`: there is no push webhook, so `deploy_on_push` is
+# not available on this source type. Pushing the mirror does NOT redeploy;
+# `doctl apps create-deployment <app-id>` does.
+name: blockking-web
+region: sgp
+
+# Custom domains. DNS for `blockking.gg` lives in Cloudflare, not in DigitalOcean,
+# so there is no `zone:` field here: App Platform only records the names and issues
+# the certificates, and the CNAMEs are created on the Cloudflare side.
+#
+# `www` is PRIMARY and the apex is an ALIAS of it, so the canonical URL the site
+# advertises (src/lib/content/th.ts -> meta.origin) is the www one.
+domains:
+  - domain: www.blockking.gg
+    type: PRIMARY
+  - domain: blockking.gg
+    type: ALIAS
+
+static_sites:
+  - name: web
+    git:
+      repo_clone_url: https://github.com/aommiez/blockking-web.git
+      branch: main
+
+    # The mirror has package.json at its root, so there is no source_dir.
+    environment_slug: node-js
+    build_command: npm ci && npm run build
+
+    # adapter-static writes a fully prerendered tree here (see svelte.config.js).
+    output_dir: build
+
+    index_document: index.html
+    # Single route, so anything unmatched is a genuine 404. There is no SPA
+    # fallback to route through; adapter-static emits no 404.html.
+    error_document: index.html
+
+    routes:
+      - path: /
